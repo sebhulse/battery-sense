@@ -5,17 +5,20 @@ import json
 from dotenv import load_dotenv
 from psutil import sensors_battery
 
+# get env variables for Notion
 battery = sensors_battery()
 load_dotenv('.env')
 NOTION_AUTH = getenv('NOTION_AUTH')
 NOTION_DB = getenv('NOTION_DB')
 
+# get values to push to database
 percent = battery.percent / 100
 secsleft = battery.secsleft
 plugged = battery.power_plugged
 time = strftime("%a, %d %b %Y %H:%M:%S", localtime())
 
 
+# converts seconds to hours:minutes:seconds
 def secs2hours(secs):
     mm, ss = divmod(secs, 60)
     hh, mm = divmod(mm, 60)
@@ -27,10 +30,13 @@ if plugged:
 else:
     plugged = 'No'
 
+# if plugged in, seconds left = 0
 if secsleft < 0:
     secsleft = 0
 
+# create new page in notion database
 url = 'https://api.notion.com/v1/pages'
+# properties of database: 'Name': local time, 'Percent': battery percent, 'Time Left': time left on battery in hh:mm:ss, 'Plugged In': plugged in to power status
 body = {
     "parent": {"database_id": NOTION_DB},
     "properties": {
@@ -66,8 +72,10 @@ body = {
         }
     }
 }
+# auth and notion version
 headers = {'Authorization': 'Bearer ' + NOTION_AUTH,
            'Notion-Version': '2021-05-13', 'Content-Type': 'application/json'}
+# try pushing to database for 5s
 try:
     r = post(url, data=json.dumps(body), headers=headers, timeout=5)
     if r.status_code == 200:

@@ -1,25 +1,27 @@
+# first, initiate the minimal script to test whether battery.percentage < 100% - if not, exit the program.
+from psutil import sensors_battery
+battery = sensors_battery()
+percent = battery.percent / 100
+if percent == 1.0:
+    sys.exit('100% battery')
+
+# continue the script
 from time import localtime, strftime
 from os import getenv
 from requests import post
 import json
 from dotenv import load_dotenv
-from psutil import sensors_battery
 import sys
 
 # get env variables for Notion - requires a .env file with NOTION_AUTH (auth key) and NOTION_DB (database id) in
-battery = sensors_battery()
 load_dotenv('.env')
 NOTION_AUTH = getenv('NOTION_AUTH')
 NOTION_DB = getenv('NOTION_DB')
 
-# get values to push to database
-percent = battery.percent / 100
+# get remaining values to push to database
 secsleft = battery.secsleft
 plugged = battery.power_plugged
 time = strftime("%a, %d %b %Y %H:%M:%S", localtime())
-
-if percent == 1.0:
-    sys.exit('100% battery')
 
 
 # converts seconds to hours:minutes:seconds

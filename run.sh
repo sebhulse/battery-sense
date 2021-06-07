@@ -1,6 +1,6 @@
 #!/bin/bash
 # cronjob every 2 minutes:
-# */2 * * * * bash /<insert_path_here>/battery-sense/run.sh
+# */2 * * * * bash //<insert_path_here>/battery-sense/run.sh
 
 cd /<insert_path_here>/battery-sense
 

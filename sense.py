@@ -6,7 +6,7 @@ if percent == 1.0:
     sys.exit('100% battery')
 
 # continue the script
-from time import localtime, strftime
+from time import localtime, strftime, time_ns
 from os import getenv
 from requests import post
 import json
@@ -22,7 +22,7 @@ NOTION_DB = getenv('NOTION_DB')
 secsleft = battery.secsleft
 plugged = battery.power_plugged
 time = strftime("%a, %d %b %Y %H:%M:%S", localtime())
-
+epochtime = time_ns()
 
 # converts seconds to hours:minutes:seconds
 def secs2hours(secs):
@@ -35,10 +35,6 @@ if plugged:
     plugged = 'Yes'
 else:
     plugged = 'No'
-
-# if plugged in, seconds left = 0
-if secsleft < 0:
-    secsleft = 0
 
 # create new page in notion database
 url = 'https://api.notion.com/v1/pages'
@@ -75,6 +71,9 @@ body = {
                     }
                 }
             ]
+        },
+        "Epoch Time": {
+            "number": epochtime
         }
     }
 }

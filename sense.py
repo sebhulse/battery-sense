@@ -36,6 +36,10 @@ if plugged:
 else:
     plugged = 'No'
 
+# if plugged in, seconds left = 0
+if secsleft < 0:
+    secsleft = 0
+
 # create new page in notion database
 url = 'https://api.notion.com/v1/pages'
 # properties of database: 'Name': local time, 'Percent': battery percent, 'Time Left': estimated time left on battery in hh:mm:ss, 'Plugged In': plugged in to power status

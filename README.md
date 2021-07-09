@@ -1,20 +1,37 @@
 # Battery Status Logger
 
+**For a comprehensive walkthrough/guide for this tool, see [this medium article](https://sebhulse.medium.com/a-laptop-battery-status-logger-with-the-notion-api-and-python-notion-public-api-guide-44595458cbd6).**
+
 This is a python3 script intended to be run regularly (every 2 mins) as a cronjob on a mac/linux laptop system. It takes the battery percentage, estimated time left on battery and 'plugged in' status using the python psutil package, and pushes it to a Notion.so database using their new official API and the python requests package.
 
 ## Setup
 
-First, create a directory and clone the repo:
+First, create a full-page notion database (`/table`) with the following properties (database schema):
+
+```bash
+Name: Title
+Percent: Number
+Time Left: Text
+Plugged In: Text
+Visual: Formula
+Epoch Time: Number
+```
+
+Also, create a [notion integration](https://www.notion.com/my-integrations) as above or as shown in the [Notion documentation](https://developers.notion.com/docs) and note the Notion Integration Key.
+
+Then `Invite` the Notion Integration to the database with the `Share` button and find the database ID as above or as shown in the [Notion documentation](https://developers.notion.com/docs).
+
+Now, create a directory and clone the repo:
 
 ```bash
 mkdir <path of directory to create>
 git clone https://github.com/sebhulse/battery-sense.git
 ```
 
-Then create a .env file in that directory with your NOTION_AUTH (notion auth key) and NOTION_DB (notion database id) variables - [see the API docs](https://developers.notion.com/reference/intro):
+Then create a `.env` file in that directory with your `NOTION_AUTH` (Notion Integration Key) and `NOTION_DB` (Notion database ID) variables as above or as shown in the [Notion documentation](https://developers.notion.com/docs):
 
 ```
-NOTION_AUTH=<your_notion_auth_key_here>
+NOTION_AUTH=<your_notion_integration_key_here>
 NOTION_DB=<your_database_ID_here>
 ```
 

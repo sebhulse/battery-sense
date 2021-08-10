@@ -1,5 +1,6 @@
 # first, initiate the minimal script to test whether battery.percentage < 100% - if not, exit the program.
 from psutil import sensors_battery
+import sys
 battery = sensors_battery()
 percent = battery.percent / 100
 if percent == 1.0:
@@ -11,7 +12,6 @@ from os import getenv
 from requests import post
 import json
 from dotenv import load_dotenv
-import sys
 
 # get env variables for Notion - requires a .env file with NOTION_AUTH (auth key) and NOTION_DB (database id) in
 load_dotenv('.env')
